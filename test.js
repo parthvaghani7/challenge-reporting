@@ -20,6 +20,51 @@ tape('health', async function (t) {
   }
 })
 
+tape('student', async function (t) {
+  const url = `${endpoint}/student/1`
+  try {
+    const { data, response } = await jsonist.get(url)
+    if (response.statusCode !== 200) {
+      throw new Error('Error while processing your request')
+    }
+    t.ok(data.success, 'should have student data')
+    t.end()
+  } catch (e) {
+    t.error(e)
+  }
+})
+
+tape('student_grades_report', async function (t) {
+  const url = `${endpoint}/student/1/grades`
+  try {
+    const { data, response } = await jsonist.get(url)
+    if (response.statusCode !== 200) {
+      throw new Error('Error while processing your request')
+    }
+    t.ok(data.success, 'should have successful data')
+    t.ok(data.student, 'should have the student data')
+    t.ok(data.grades, 'should have the grades')
+
+    t.end()
+  } catch (e) {
+    t.error(e)
+  }
+})
+
+tape('coursewise_grades_report', async function (t) {
+  const url = `${endpoint}/course/all/grades`
+  try {
+    const { data, response } = await jsonist.get(url)
+    if (response.statusCode !== 200) {
+      throw new Error('Error while processing your request')
+    }
+    t.ok(data.success, 'should have successful data')
+    t.end()
+  } catch (e) {
+    t.error(e)
+  }
+})
+
 tape('cleanup', function (t) {
   server.closeDB()
   server.close()
